@@ -8,8 +8,8 @@ import TutorSectionWrapper from "@/components/homePage/TutorSectionWrapper";
 import type { Metadata } from 'next'
  
 export const metadata: Metadata={
-  title: "TutorLink | Home",
-  description : "TutorLink helps you to find Best tutors"
+  title: "TutorXpert | Home",
+  description : "TutorXpert helps you to find Best tutors"
 }
 
 

@@ -15,7 +15,7 @@ export const metadata: Metadata={
 
 export default function HomePage() {
   return (
-    <div className="mt-12">
+    <div>
       
       <Banner/>
       <BenefitsSection/>

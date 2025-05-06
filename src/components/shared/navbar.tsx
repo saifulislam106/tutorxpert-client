@@ -1,11 +1,9 @@
 "use client";
-
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { LayoutDashboard, LogIn, LogOut, Menu, X } from "lucide-react";
+import {  LayoutDashboard, LogIn, LogOut} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-// import { useUser } from "@/context/UserContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,196 +12,220 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Avatar } from "../ui/avatar";
-// import { useAppDispatch, useAppSelector } from "@/Redux/hook";
-// import { persistor } from "@/Redux/store";
-// import { logout } from "@/Redux/Features/Auth/authSlice";
-// import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useUser } from "@/context/UserContext";
+import { logout } from "@/services/auth";
 // import { protectedRoutes } from "@/constants";
+import clsx from "clsx";
+import { FiMenu } from "react-icons/fi";
+import { IoCloseOutline } from "react-icons/io5";
+import { ScrollArea } from "../ui/scroll-area";
 
-const NavBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
-//   const dispatch = useAppDispatch();
+const Navbar = () => {
+  // Hookes
+    const [isSideMenuOpen, setMenu] = useState(false);
+  const [scrolling, setScrolling] = useState(false)
+  const location = usePathname();
+  const router = useRouter();
+  const { user, setIsLoading } = useUser();
 
-  const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "Tutors", href: "/tutors" },
-    { label: "About Us", href: "/about" },
-    { label: "Contact", href: "/contact" },
-    { label: "Blogs", href: "/blogs" },
-    { label: "FAQ", href: "/faq" },
+
+  // nav routes
+  const menuData = [
+    { name: "Home", href: "/" },
+    { name: "Tutors", href: "/tutors" },
+    { name: "About Us", href: "/about" },
+    { name: "Contact", href: "/contact" },
+    { name: "Blogs", href: "/blogs" },
+    { name: "FAQ", href: "/faq" },
   ];
 
-  const { user, setIsLoading } = useUser();
-//   const user = useAppSelector((state) => state.auth.user);
-  const router = useRouter();
-  // const location = usePathname();
-
-  const handleScroll = () => {
-    setScrolled(window.scrollY > 20);
-  };
-
   useEffect(() => {
+    const handleScroll = () => {
+      setScrolling(window.scrollY > 10);
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // handle log out
   const handleLogOut = () => {
-    // dispatch(logout());
-    // persistor.purge();
-    router.push("/");
-    // if (protectedRoutes.some((route) => location.match(route))) {
-    //   router.push("/");
-    // }
+    logout();
+    setIsLoading(true);
+    router.push('/');
   };
 
-  const linkClasses = (href: string) =>
-    `text-lg font-bold transition transform hover:-translate-y-0.5 hover:scale-105 duration-200 ${
-      pathname === href
-        ? "text-blue-600 underline underline-offset-4"
-        : "text-gray-700 hover:text-blue-600"
-    }`;
+  // const linkClasses = (href: string) =>
+  //   `text-lg font-bold transition transform hover:-translate-y-0.5 hover:scale-105 duration-200 ${
+  //     pathname === href
+  //       ? "text-blue-600 underline underline-offset-4"
+  //       : "text-gray-700 hover:text-blue-600"
+  //   }`;
 
   return (
-    <nav
-      className={`fixed top-0 z-50 w-full transition-all duration-300 overflow-x-hidden shadow-sm shadow-blue-600 ${
-        scrolled ? "bg-blue-100 shadow-md text-black" : "bg-gray-100 text-black"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex justify-between items-center overflow-x-hidden">
-        <div className="flex items-center gap-2">
-          <button
-            className="md:hidden text-sm px-2"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-          <Link
-            href="/"
-            className="text-2xl text-blue-600 md:text-4xl font-bold whitespace-nowrap"
-          >
-            TutorLink 🎓
+    <div
+    className={clsx(
+      'fixed z-10 w-full transition-all text-white',
+      scrolling && 'bg-blue-100 shadow-sm shadow-blue-200 text-black',
+    )}
+  >
+    <nav className="flex justify-between px-8 items-center py-2 max-w-7xl mx-auto">
+      <div className="flex items-center gap-8">
+        {/* Mobile Menu Button */}
+        <FiMenu
+          onClick={() => setMenu(true)}
+          className="text-3xl cursor-pointer lg:hidden"
+        />
+        {scrolling ? (
+          <Link href={'/'}>
+            {/* <Image src={logo} alt="logo" height={200} width={200} /> */}
           </Link>
-        </div>
-        {/* menu for desktop device */}
-        <div className="hidden md:flex gap-6 items-center">
-          {navLinks.map((link) => (
+        ) : (
+          <Link href={'/'}>
+            <h2 className="text-4xl text-white font-bold">TutorXpert</h2>
+            {/* <Image src={logo2} alt="logo" height={200} width={200} /> */}
+          </Link>
+        )}
+        {/* Logo */}
+        {/* <Link href={'/'}>
+          <Image src={logo} alt="logo" height={200} width={200} />
+        </Link> */}
+      </div>
+
+      {/* Desktop Navigation */}
+      <div className="hidden lg:flex items-center gap-8">
+        {menuData.map((menu, i) =>
+           (
             <Link
-              key={link.href}
-              href={link.href}
-              className={linkClasses(link.href)}
+              key={i}
+              className={clsx(
+                'font-semibold uppercase',
+                location === menu.href
+                  ? 'text-blue-600 font-semibold  rounded-lg px-3'
+                  : scrolling
+                    ? 'text-black group flex  cursor-pointer flex-col hover:text-blue-600'
+                    : 'text-white hover:text-blue-600 group flex  cursor-pointer flex-col',
+              )}
+              href={menu.href ?? ''}
             >
-              {link.label}
+              {menu.name}
+              <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
             </Link>
-          ))}
-        </div>
+          ),
+        )}
+      </div>
 
-        {/* login button for desktop device */}
-        <section className="flex items-center gap-4">
-          {/* <CartSheet></CartSheet> */}
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar>
-                  {/* <AvatarImage
-                    src={"https://github.com/shadcn.png"}
-                    alt="User Profile Picture"
-                    className="w-10 h-10 rounded-full"
-                  /> */}
-                  {/* <Image
-                    src={"https://i.ibb.co/Dc78Zt5/avatar-1299805-1280.png"}
-                    alt={""}
-                    width={40}
-                    height={40}
-                    className="text-blue-600"
-                  /> */}
-                  {/* <AvatarFallback>User</AvatarFallback> */}
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className=" bg-black border-blue-600 shadow-[0px_0px_5px_theme(colors.blue.600)]">
-                <DropdownMenuLabel className=" items-center text-gray-100 ">
-                  {user.role}
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-
-                {user.role == "Student" ? (
-                  <DropdownMenuItem>
-                    <Link
-                      href="/studentdashboard"
-                      className=" flex gap-1 items-center text-lg text-blue-600 "
-                    >
-                      {" "}
-                      <LayoutDashboard className=" text-blue-600" />
-                      DashBoard
-                    </Link>
-                  </DropdownMenuItem>
-                ) : (
-                  <DropdownMenuItem>
-                    {" "}
-                    <Link
-                      className=" flex gap-1 items-center text-base text-blue-600 "
-                      href="/tutor"
-                    >
-                      {" "}
-                      <LayoutDashboard className=" text-blue-600" />
-                      DashBoard
-                    </Link>
-                  </DropdownMenuItem>
-                )}
-
-                <DropdownMenuItem
-                  className=" flex gap-1 items-center text-base text-blue-600 "
-                  onClick={handleLogOut}
-                >
-                  <LogOut className=" text-blue-600" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div className=" flex gap-2">
-              <Link href={"/login"}>
-                <Button
-                  variant="outline"
-                  className="hover:bg-blue-600 bg-white shadow-lg shadow-blue-600 hover:text-white text-blue-600 border-blue-600 flex items-center gap-2 "
-                >
-                  <LogIn />
-                  Login
-                </Button>
-              </Link>
-            </div>
-          )}
-
-          {/* avtar img */}
+      {/* Mobile Sidebar */}
+      <div
+        className={clsx(
+          'fixed h-full w-screen bg-black/50 backdrop-blur-sm top-0 right-0 -translate-x-full transition-all lg:hidden',
+          isSideMenuOpen && 'translate-x-0',
+        )}
+      >
+        <section className="text-black bg-white flex-col absolute left-0 top-0 h-screen p-8 gap-8 z-50 w-56 flex">
+          <IoCloseOutline
+            onClick={() => setMenu(false)}
+            className="mt-0 mb-8 text-3xl cursor-pointer"
+          />
+          <ScrollArea className="h-96">
+            {menuData.map((menu, i) => (
+              <div key={i}>
+               
+               
+                  <Link
+                    onClick={() => setMenu(false)}
+                    className="font-bold block"
+                    href={menu.href ?? ''}
+                  >
+                    {menu.name}
+                  </Link>
+                
+              </div>
+            ))}
+          </ScrollArea>
         </section>
       </div>
-      {/* for mobile device  */}
-      {isOpen && (
-        <div className="md:hidden bg-white px-4 py-4 border-t shadow-md w-full overflow-hidden">
-          <div className="flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={linkClasses(link.href)}
-                onClick={() => setIsOpen(false)}
+
+      {/* User Section */}
+      <section className="flex items-center gap-4">
+        {/* <CartSheet></CartSheet> */}
+        {user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>User</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className=" bg-black border-blue-600 shadow-[0px_0px_5px_theme(colors.blue.600)]">
+              <DropdownMenuLabel className=" items-center text-gray-100 ">
+                {user.role}
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              {user.role == 'Student' ? (
+                <DropdownMenuItem>
+                  <Link
+                    href="/student"
+                    className=" flex gap-1 items-center text-lg text-blue-600 "
+                  >
+                    {' '}
+                    <LayoutDashboard className=" text-blue-600" />
+                    DashBoard
+                  </Link>
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem>
+                  {' '}
+                  <Link
+                    className=" flex gap-1 items-center text-base text-blue-600 "
+                    href="/tutor"
+                  >
+                    {' '}
+                    <LayoutDashboard className=" text-blue-600" />
+                    DashBoard
+                  </Link>
+                </DropdownMenuItem>
+              )}
+
+              <DropdownMenuItem
+                className=" flex gap-1 items-center text-base text-blue-600 "
+                onClick={handleLogOut}
               >
-                {link.label}
-              </Link>
-            ))}
-            <Link href="/login" onClick={() => setIsOpen(false)}>
-              <Button className="transition-transform hover:scale-105 duration-300">
+                <LogOut className=" text-blue-600" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <div className=" flex gap-2">
+            <Link href={'/login'}>
+              <Button
+                variant="outline"
+                className="hover:bg-blue-600 bg-white shadow-lg shadow-blue-600 hover:text-white text-blue-600 border-blue-600 flex items-center gap-2 "
+              >
+                <LogIn />
                 Login
               </Button>
             </Link>
+            {/* <Link href={'/register'}>
+              <Button
+                variant="outline"
+                className="bg-blue-600 text-white shadow-lg shadow-blue-600 hover:text-blue-600 border-blue-600 flex items-center gap-2 "
+              >
+                <LogIn />
+                SignUp
+              </Button>
+            </Link> */}
           </div>
-        </div>
-      )}
+        )}
+
+        {/* avtar img */}
+      </section>
     </nav>
+  </div>
   );
 };
 
-export default NavBar;
+export default Navbar;

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 const Banner = () => {
   return (
-    <section className="w-full items-center bg-blue-50 dark:bg-gray-900 text-slate-900 dark:text-white py-12 px-6 mt-[80px]">
+    <section>
   <div className="max-w-7xl mx-auto h-full flex flex-col-reverse md:flex-row items-center justify-center gap-10">
 
     {/* Text Section */}

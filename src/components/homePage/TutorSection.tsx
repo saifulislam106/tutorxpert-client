@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+// import Image from "next/image";
 import { motion } from "framer-motion";
 // import img from "../../../public/tutor.jpg";
 import Link from "next/link";
@@ -52,13 +52,13 @@ const TutorSection = ({ tutors }: { tutors: IUser[] }) => {
             className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md dark:shadow-lg group relative transform transition-transform duration-300 hover:scale-105"
           >
             <div className="relative w-full h-60">
-              <Image
+              {/* <Image
                 src={tutor?.profilePicture || "https://i.ibb.co/6s0x5gD/default-profile.png"}
                 alt={tutor?.name || "tutor"}
                 layout="fill"
                 objectFit="cover"
                 className="group-hover:scale-105 transition-transform duration-300"
-              />
+              /> */}
             </div>
             <div className="p-4 space-y-1">
               <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition duration-300">

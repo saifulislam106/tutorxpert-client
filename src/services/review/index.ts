@@ -1,40 +1,52 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const postReview = async (tutorId: string,name:string, rating: number, reviewText: string) => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/reviews`, {
+export const postReview = async (
+  tutorId: string,
+  name: string,
+  rating: number,
+  reviewText: string
+) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/reviews`,
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          tutorId,name,
-          rating,reviewText
+          tutorId,
+          name,
+          rating,
+          reviewText,
         }),
-      });
-  
-      const data = await response.json();
-  
-      return { success: true, message: data.message || "Review sent successfully!" };
-    } catch (error) {
-      console.error("Error sending Review: ", error);
-      return { success: false}
-    }
-  };
+      }
+    );
+
+    const data = await response.json();
+
+    return {
+      success: true,
+      message: data.message || "Review sent successfully!",
+    };
+  } catch (error) {
+    console.error("Error sending Review: ", error);
+    return { success: false };
+  }
+};
 
 export const getReviews = async (tutorId: string) => {
-    try {
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BASE_API}/reviews/${tutorId}`,
-            {
-                next: {
-                    tags: ["REVIEWS"],
-                },
-            }
-        );
-        const data = await res.json();
-        return data;
-
-    } catch (error: any) {
-        return { status: false, message: error.message };
-    }
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/reviews/${tutorId}`,
+      {
+        next: {
+          tags: ["REVIEWS"],
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error: any) {
+    return { status: false, message: error.message };
+  }
 };

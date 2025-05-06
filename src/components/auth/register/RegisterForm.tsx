@@ -54,7 +54,7 @@ const RegisterForm = () => {
 
   const router = useRouter();
 
-//   submit handler 
+  //   submit handler
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (data.role === "Tutor") {
       const formattedData = {
@@ -491,7 +491,7 @@ const RegisterForm = () => {
 
               <Button
                 type="submit"
-                className=" w-full bg-[#066ccb] hover:bg-blue-600/40 hover:text-[#066ccb] text-lg hover:border-[#066ccb]"
+                className=" w-full bg-indigo-500 hover:bg-blue-600/40 hover:text-[#066ccb] text-lg hover:border-[#066ccb]"
                 disabled={uploading}
               >
                 {isSubmitting ? "Registering...." : "Register"}

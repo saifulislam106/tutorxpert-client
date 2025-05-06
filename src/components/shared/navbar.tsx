@@ -18,7 +18,7 @@ import { Avatar } from "../ui/avatar";
 // import { useAppDispatch, useAppSelector } from "@/Redux/hook";
 // import { persistor } from "@/Redux/store";
 // import { logout } from "@/Redux/Features/Auth/authSlice";
-import Image from "next/image";
+// import Image from "next/image";
 import { useUser } from "@/context/UserContext";
 // import { protectedRoutes } from "@/constants";
 
@@ -113,13 +113,13 @@ const NavBar = () => {
                     alt="User Profile Picture"
                     className="w-10 h-10 rounded-full"
                   /> */}
-                  <Image
+                  {/* <Image
                     src={"https://i.ibb.co/Dc78Zt5/avatar-1299805-1280.png"}
                     alt={""}
                     width={40}
                     height={40}
                     className="text-blue-600"
-                  />
+                  /> */}
                   {/* <AvatarFallback>User</AvatarFallback> */}
                 </Avatar>
               </DropdownMenuTrigger>

@@ -4,7 +4,7 @@
 export const getAllTutors = async () => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/users/tutors`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/tutors`,
       {
         next: {
           tags: ["TUTORS"],
@@ -21,10 +21,10 @@ export const getAllTutors = async () => {
   }
 };
 
-export const getSingleTutor = async (tutorId:string) => {
+export const getSingleTutor = async (tutorId: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/users/tutors/${tutorId}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/tutors/${tutorId}`,
       {
         next: {
           tags: ["TUTORS"],

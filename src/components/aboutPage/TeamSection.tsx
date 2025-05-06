@@ -2,6 +2,8 @@
 
 // import Image from "next/image";
 
+// import Image from "next/image";
+
 const teamMembers = [
   {
     name: "Aria Johnson",
@@ -54,7 +56,7 @@ const TeamSection = () => {
                   fill
                   className="rounded-full object-cover"
                 /> */}
-              </div>
+              </div> 
               <h3 className="text-xl font-semibold text-blue-700 dark:text-white">
                 {member.name}
               </h3>

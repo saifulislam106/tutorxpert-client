@@ -51,8 +51,8 @@ const LoginForm = () => {
 
   return (
     <div className="min-h-screen  flex items-center justify-center px-4 py-5">
-      <div className="md:w-[450px] w-[350px] shadow-[0px_0px_20px_theme(colors.purple.600)] rounded-lg border border-purple-600 py-6 px-8 bg-white dark:border-zinc-700 dark:bg-zinc-900">
-        <h2 className="text-3xl font-extrabold text-purple-700 dark:text-white text-center py-5 border-b border-purple-500">
+      <div className="md:w-[450px] w-[350px]  rounded-lg border border-purple-600 py-6 px-8 bg-white dark:border-zinc-700" >
+        <h2 className="text-3xl font-extrabold text-purple-700  text-center py-5 border-b border-purple-500">
           Login Now
         </h2>
         <Form {...form}>
@@ -65,7 +65,7 @@ const LoginForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg text-purple-700 dark:text-gray-200">
+                  <FormLabel className="text-lg font-semibold ">
                     Email
                   </FormLabel>
                   <FormControl>
@@ -86,7 +86,7 @@ const LoginForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg text-purple-700 dark:text-gray-200">
+                  <FormLabel className="text-lg font-semibold ">
                     Password
                   </FormLabel>
                   <FormControl>

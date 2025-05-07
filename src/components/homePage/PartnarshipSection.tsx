@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+// import Image from 'next/image';
 // import Image from 'next/image';
 
 const partners = [
@@ -40,12 +40,12 @@ const Partnerships = () => {
               viewport={{ once: true }}
               className="relative w-28 h-14 mx-auto"
             >
-              <Image
+              {/* <Image
                 src={partner?.logo}
                 alt={partner?.name}
                 fill
                 className="object-contain"
-              />
+              /> */}
             </motion.div>
           ))}
         </div>

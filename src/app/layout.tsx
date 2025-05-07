@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-      className={`${geistSans.className} ${geistMono.className} antialiased  transition-colors duration-300 dark:bg-gray-900 `}>
+      className={`${geistSans.className} ${geistMono.className} `}>
        
         <Providers>
         {children}

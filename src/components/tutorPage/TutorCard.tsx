@@ -7,7 +7,7 @@ import React from "react";
 import Link from "next/link";
 import { IUser } from "@/types/user";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+// import Image from "next/image";
 
 const TutorsCard = ({ tutor }: { tutor: IUser }) => {
   return (
@@ -15,13 +15,13 @@ const TutorsCard = ({ tutor }: { tutor: IUser }) => {
       <div className=" flex flex-col lg:flex-row justify-between gap-6 ">
 
         <div className=" lg:w-1/4">
-          <Image
+          {/* <Image
             src={tutor?.profilePicture || "img"}
             alt={tutor?.name || "Tutor"}
             height={400}
             width={400}
             className="rounded object-cover border-2 border-gray-300 dark:border-gray-600"
-          />
+          /> */}
       
         </div>
 

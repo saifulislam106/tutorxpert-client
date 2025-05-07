@@ -1,55 +1,57 @@
-"use client";
+'use client';
 import Link from 'next/link';
-// import Image from 'next/image';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
+import bannerImg from '../../assets/banner.jpg';
+import Image from 'next/image';
 
 const Banner = () => {
   return (
-    <section>
-  <div className="max-w-7xl mx-auto h-full flex flex-col-reverse md:flex-row items-center justify-center gap-10">
+    <section className="bg-white dark:bg-gray-900 py-16">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col-reverse md:flex-row items-center justify-between gap-12">
 
-    {/* Text Section */}
-    <div className="space-y-6 text-center md:text-left">
-      <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-blue-700 dark:text-white leading-tight">
-        Find & Connect with the Best Tutors
-      </h1>
-      <p className="text-gray-700 dark:text-gray-300 text-lg">
-        TutorLink helps students succeed by matching them with top-rated, verified tutors across all subjects.
-      </p>
+        {/* Text Section */}
+        <div className="flex-1 space-y-6 text-center md:text-left">
+          <h1 className="text-4xl md:text-5xl font-bold text-purple-700 dark:text-white leading-tight">
+            Find & Connect with the Best Tutors
+          </h1>
+          <p className="text-gray-700 dark:text-gray-300 text-lg">
+            TutorXpert helps students succeed by matching them with top-rated, verified tutors across all subjects.
+          </p>
 
-      {/* Search Bar */}
-      <div className="relative max-w-md mx-auto md:mx-0">
-        <input
-          type="text"
-          placeholder="Search by subject, grade, or tutor..."
-          className="w-full py-3 pl-12 pr-4 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 outline-none"
-        />
-        <Search className="absolute left-4 top-3.5 text-gray-500 dark:text-gray-400" size={20} />
+          {/* Search Bar */}
+          <div className="relative max-w-md mx-auto md:mx-0">
+            <input
+              type="text"
+              placeholder="Search by subject, grade, or tutor..."
+              className="w-full py-3 pl-12 pr-4 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
+            />
+            <Search className="absolute left-4 top-3.5 text-gray-500 dark:text-gray-400" size={20} />
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex justify-center md:justify-start gap-4 pt-2">
+            <Link href="/tutors">
+              <Button className="bg-purple-600 hover:bg-purple-700 text-white shadow-md shadow-purple-300">
+                Find Tutors
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Image Section */}
+        <div className="flex-1 relative h-[320px] md:h-[480px] lg:h-[500px] w-full hover:scale-105 transition-transform duration-300 rounded-xl overflow-hidden shadow-lg shadow-purple-100">
+          <Image
+            src={bannerImg}
+            alt="Banner"
+            fill
+            className="object-cover rounded-xl"
+            priority
+          />
+        </div>
+
       </div>
-
-      {/* CTA Buttons */}
-      <div className="flex justify-center md:justify-start gap-4 pt-2">
-        <Link href="/tutors">
-          <Button>Find Tutors</Button>
-        </Link>
-      </div>
-    </div>
-
-    {/* Image Section */}
-    <div className="relative w-full h-[550px] md:h-[550px] hover:shadow-blue-600 hover:scale-105 transition-transform duration-300 ease-in-out rounded-xl overflow-hidden">
-      {/* <Image
-        src="https://i.ibb.co/DxC7QQx/banner1.png"
-        alt="Banner"
-        fill
-        className="object-cover rounded-xl shadow-xl"
-        priority
-      /> */}
-    </div>
-  </div>
-</section>
-
+    </section>
   );
 };
 

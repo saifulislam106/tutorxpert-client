@@ -1,100 +1,78 @@
-"use client";
-// import Image from "next/image";
-import { motion } from "framer-motion";
-// import img from "../../../public/tutor.jpg";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { IUser } from "@/types/user";
+'use client'
 
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import tutorImg from '../../assets/tutor.jpg'
+import { IUser } from '@/types/user'
 
 const TutorSection = ({ tutors }: { tutors: IUser[] }) => {
-  // const tutors = [
-  //     {
-  //       name: 'Emily Johnson',
-  //       subject: 'Mathematics',
-  //       image: '/tutors/emily.jpg',
-  //       bio: 'Passionate math tutor with 5+ years of experience helping students excel.',
-  //     },
-  //     {
-  //       name: 'Daniel Kim',
-  //       subject: 'Physics',
-  //       image: '/tutors/daniel.jpg',
-  //       bio: 'Physics enthusiast making complex concepts simple and fun.',
-  //     },
-  //     {
-  //       name: 'Sophia Lee',
-  //       subject: 'English Literature',
-  //       image: '/tutors/sophia.jpg',
-  //       bio: 'Experienced English tutor helping students master writing & analysis.',
-  //     },
-  //   ]
-
   return (
-    <section className="py-6 my-6 max-w-7xl mx-auto px-4 transition-colors duration-300">
-      <div className="text-center mb-12">
+    <section className="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-3xl md:text-4xl  font-bold text-blue-700 dark:text-white"
+          className="text-3xl md:text-4xl font-bold text-center text-purple-700 dark:text-white mb-10"
         >
-          Meet Our Top Tutors 👩‍🏫👨‍🏫
+          Meet Our Top Tutors 
         </motion.h2>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {tutors.map((tutor, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: idx * 0.1 }}
-            className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md dark:shadow-lg group relative transform transition-transform duration-300 hover:scale-105"
-          >
-            <div className="relative w-full h-60">
-              {/* <Image
-                src={tutor?.profilePicture || "https://i.ibb.co/6s0x5gD/default-profile.png"}
-                alt={tutor?.name || "tutor"}
-                layout="fill"
-                objectFit="cover"
-                className="group-hover:scale-105 transition-transform duration-300"
-              /> */}
-            </div>
-            <div className="p-4 space-y-1">
-              <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition duration-300">
-                {tutor?.name}
-              </h3>
-              <p className="text-red-400 font-semibold ">
-                {" "}
-                {tutor?.subjects?.split(",").map((subject, index) => (
-                  <span key={index}>
-                    {index > 0 ? ", " : ""}{subject}
-                  </span>
-                ))}
-              </p>
-              <p className="text-sm text-gray-600">{tutor?.bio}</p>
-            </div>
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition duration-300">
-              <Link
-                href={`/tutors/${tutor?._id}`}
-                className="bg-blue-600 text-white text-sm px-4 py-1.5 rounded-md shadow-lg hover:bg-blue-700"
-              >
-                View Profile
-              </Link>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {tutors.map((tutor, idx) => (
+            <motion.div
+              key={tutor._id || idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-transform duration-300 group"
+            >
+              <div className="relative w-full h-56 md:h-60">
+                <Image
+                  src={tutor?.profilePicture || tutorImg}
+                  alt={tutor?.name || 'Tutor'}
+                  layout="fill"
+                  objectFit="cover"
+                  className="transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-5 space-y-2">
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-white group-hover:text-purple-600 transition duration-300">
+                  {tutor?.name}
+                </h3>
+                <p className="text-sm font-medium text-purple-600 dark:text-purple-300">
+                  {tutor?.subjects
+                    ?.split(',')
+                    .map((s) => s.trim())
+                    .filter(Boolean)
+                    .join(', ')}
+                </p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">{tutor?.bio}</p>
+              </div>
+              <div className="p-4 text-center">
+                <Link
+                  href={`/tutors/${tutor?._id}`}
+                  className="inline-block bg-purple-600 text-white text-sm px-4 py-2 rounded-md shadow-md hover:bg-purple-700 transition"
+                >
+                  View Profile
+                </Link>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
-      <div className="text-center my-10">
-        <Link href="/tutors">
-          <Button className="transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
-            See All
-          </Button>
-        </Link>
+        <div className="mt-12 text-center">
+          <Link href="/tutors">
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-md shadow hover:shadow-lg transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
+              See All Tutors
+            </Button>
+          </Link>
+        </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default TutorSection;
+export default TutorSection

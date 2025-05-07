@@ -1,8 +1,5 @@
 'use client'
 
-import { useKeenSlider } from 'keen-slider/react'
-import 'keen-slider/keen-slider.min.css'
-import { motion } from 'framer-motion'
 import {
   FaChalkboardTeacher,
   FaUsers,
@@ -10,22 +7,23 @@ import {
   FaHeadset,
   FaRegCalendarCheck,
 } from 'react-icons/fa'
+import { motion } from 'framer-motion'
 
 const achievements = [
   {
     stat: '5,000+',
     label: 'Successful Sessions',
-    icon: <FaRegCalendarCheck size={32} className="text-blue-500 dark:text-blue-400" />,
+    icon: <FaRegCalendarCheck size={32} className="text-purple-600 dark:text-purple-400" />,
   },
   {
     stat: '1,200+',
     label: 'Verified Tutors',
-    icon: <FaChalkboardTeacher size={32} className="text-green-500 dark:text-green-400" />,
+    icon: <FaChalkboardTeacher size={32} className="text-green-600 dark:text-green-400" />,
   },
   {
     stat: '10,000+',
     label: 'Registered Students',
-    icon: <FaUsers size={32} className="text-purple-500 dark:text-purple-400" />,
+    icon: <FaUsers size={32} className="text-blue-600 dark:text-blue-400" />,
   },
   {
     stat: '99%',
@@ -39,69 +37,44 @@ const achievements = [
   },
 ]
 
-const Slider = () => {
-  const [sliderRef] = useKeenSlider<HTMLDivElement>({
-    loop: true,
-    slides: {
-      perView: 3,
-      spacing: 24,
-    },
-    breakpoints: {
-      '(max-width: 768px)': {
-        slides: { perView: 1, spacing: 12 },
-      },
-      '(min-width: 768px)': {
-        slides: { perView: 2, spacing: 16 },
-      },
-      '(min-width: 1024px)': {
-        slides: { perView: 3, spacing: 24 },
-      },
-    },
-    created(s) {
-      const interval = setInterval(() => {
-        s.next()
-      }, 3500)
-      return () => clearInterval(interval)
-    },
-  })
-
+const AchievementsColumn = () => {
   return (
-    <section className="py-12 bg-blue-100 dark:bg-gray-900 transition-colors duration-300 border-t border-blue-200 dark:border-gray-700">
+    <section className="py-20 bg-purple-50 dark:bg-gray-900 border-t border-purple-200 dark:border-gray-700 transition-colors duration-300">
+      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-10"
+        className="text-center mb-14"
       >
-        <h2 className="text-3xl md:text-4xl  font-bold text-blue-700 dark:text-white">Our Achievements 🏆</h2>
+        <h2 className="text-4xl font-bold text-purple-700 dark:text-white">Our Achievements 🏆</h2>
         <p className="text-gray-700 dark:text-gray-300 mt-2">
           Celebrating milestones with our amazing community
         </p>
       </motion.div>
 
-      <div ref={sliderRef} className="keen-slider px-4">
-        {achievements.map((item, index) => (
-          <div
+      {/* Vertical Cards Layout */}
+      <div className="max-w-2xl mx-auto flex flex-col gap-6 px-4">
+        {achievements.slice(0, 4).map((item, index) => (
+          <motion.div
             key={index}
-            className="keen-slider__slide bg-white dark:bg-gray-800 rounded-xl py-8 px-4 text-center shadow-md hover:shadow-lg transition-all duration-300"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all flex items-center gap-6"
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.4, delay: index * 0.15 }}
-              className="flex flex-col items-center gap-6"
-            >
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-full shadow-sm">
-                {item.icon}
-              </div>
-              <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">{item.stat}</h3>
-              <p className="text-gray-700 dark:text-gray-300">{item.label}</p>
-            </motion.div>
-          </div>
+            <div className="bg-white dark:bg-gray-700 p-4 rounded-full shadow-sm">
+              {item.icon}
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-purple-700 dark:text-purple-400">{item.stat}</h3>
+              <p className="text-gray-600 dark:text-gray-300">{item.label}</p>
+            </div>
+          </motion.div>
         ))}
       </div>
     </section>
   )
 }
 
-export default Slider;
+export default AchievementsColumn

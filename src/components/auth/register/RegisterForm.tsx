@@ -1,76 +1,90 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { GiTeacher } from "react-icons/gi";
-import { PiStudentBold } from "react-icons/pi";
-import "react-datepicker/dist/react-datepicker.css";
-import Link from "next/link";
+'use client';
 
-import { MoveLeft } from "lucide-react";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import DatePicker from "react-datepicker";
-import { registerUser } from "@/services/auth";
+import { zodResolver } from '@hookform/resolvers/zod';
+// import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { GiTeacher } from 'react-icons/gi';
+import { PiStudentBold } from 'react-icons/pi';
+import Link from 'next/link';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { format } from 'date-fns';
+import { CalendarIcon, MoveLeft } from 'lucide-react';
+import { registrationSchema } from '../authValidation/registerValidation';
+import { registerUser } from '@/services/auth';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+// import { Calendar } from '../ui/calendar';
+import { DateRange } from 'react-day-picker';
+import { Calendar } from '@/components/ui/calendar';
 
-const RegisterForm = () => {
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-    null,
-    null,
-  ]);
-  const [startDate, endDate] = dateRange;
-  // const formatStartDate = startDate ? format(startDate, "dd-MM-yyyy") : "";
-  // const formatEndDate = endDate ? format(endDate, "dd-MM-yyyy") : "";
-
+const RegisterFrom = () => {
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
   const [signUp, setSignUp] = useState(false);
-  const [uploading] = useState(false);
-  const form = useForm();
+  const [uploading, setUploading] = useState(false);
+  const form = useForm({
+    resolver: zodResolver(registrationSchema),
+  });
 
   const {
     formState: { isSubmitting },
   } = form;
+  // image upload
+  // const uploadImage = async (file: File) => {
+  //   setUploading(true);
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('file', file);
+  //     formData.append('upload_preset', 'my_preset'); // 🔹 Replace with your Cloudinary preset
 
+  //     const response = await axios.post(
+  //       'https://api.cloudinary.com/v1_1/demnpqwx3/image/upload',
+  //       formData,
+  //     );
+  //     setUploading(false);
+  //     return response.data.secure_url; // ✅ Get the uploaded image URL
+  //   } catch (error) {
+  //     console.error('Image upload failed', error);
+  //     setUploading(false);
+  //     return null;
+  //   }
+  // };
+  //  Handle file input change
+  // const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files?.[0]) {
+  //     const imageUrl = await uploadImage(e.target.files[0]);
+  //     if (imageUrl) {
+  //       form.setValue('profilePicture', imageUrl);
+  //     }
+  //   }
+  // };
   // password part
-  const password = form.watch("password");
-  const passwordConfirm = form.watch("passwordConfirm");
+  const password = form.watch('password');
+  const passwordConfirm = form.watch('passwordConfirm');
 
   const router = useRouter();
 
-  //   submit handler
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (data.role === "Tutor") {
+    if (data.role === 'Tutor') {
       const formattedData = {
         ...data,
         availability: {
-          from: startDate, // Ensure from is a Date object
-          to: endDate ? endDate : undefined, // Convert to if present
+          from: new Date(data.availability.from), // Ensure from is a Date object
+          to: data.availability.to ? new Date(data.availability.to) : undefined, // Convert to if present
         },
       };
+
       try {
-        console.log(formattedData);
         const res = await registerUser(formattedData);
-        console.log(res);
         if (res?.success) {
           toast.success(res?.message);
-          router.push("/login");
+          router.push('/login');
         } else {
           toast.error(res?.message);
         }
@@ -81,10 +95,9 @@ const RegisterForm = () => {
     } else {
       try {
         const res = await registerUser(data);
-        console.log(res);
         if (res?.success) {
           toast.success(res?.message);
-          router.push("/login");
+          router.push('/');
         } else {
           toast.error(res?.message);
         }
@@ -96,29 +109,29 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className=" md:w-[550px] w-[350px] shadow-[0px_0px_20px_theme(colors.blue.600)]  overflow-hidden rounded-lg border border-[#066ccb] p-4 bg-gray-100 dark:border-zinc-700 dark:bg-zinc-900">
+    <div className="md:w-[530px] w-[350px] shadow-[0px_0px_20px_theme(colors.blue.600)]  overflow-hidden rounded-lg border border-[#066ccb] p-4 bg-gray-200 dark:border-zinc-700 dark:bg-zinc-900">
       <div className="flex select-none gap-2 border-b p-2.5 *:flex-1 *:rounded-md *:border *:p-2 *:text-center  *:shadow-inner *:outline-none dark:border-[#066ccb]  *:dark:border-[#066ccb]">
         <button
           onClick={() => setSignUp(false)}
-          className={`text-sm lg:text-md ${
+          className={`${
             !signUp
-              ? "bg-[#066ccb] text-white flex justify-center items-center gap-2"
-              : "bg-white text-[#066ccb] border-[#066ccb] flex justify-center items-center gap-2"
+              ? 'bg-[#066ccb] text-white flex justify-center items-center gap-2'
+              : 'bg-white text-[#066ccb] border-[#066ccb] flex justify-center items-center gap-2'
           }`}
         >
-          {" "}
-          <PiStudentBold size={"2rem"} />
+          {' '}
+          <PiStudentBold size={'2rem'} />
           Register as Student
         </button>
         <button
           onClick={() => setSignUp(true)}
-          className={`text-sm lg:text-md ${
+          className={`${
             signUp
-              ? "bg-[#066ccb] text-white flex justify-center items-center gap-2"
-              : "bg-white text-[#066ccb] border-[#066ccb] flex justify-center items-center gap-2"
+              ? 'bg-[#066ccb] text-white flex justify-center items-center gap-2'
+              : 'bg-white text-[#066ccb] border-[#066ccb] flex justify-center items-center gap-2'
           }`}
         >
-          <GiTeacher size={"2rem"} />
+          <GiTeacher size={'2rem'} />
           Register as Tutor
         </button>
       </div>
@@ -128,10 +141,10 @@ const RegisterForm = () => {
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className={`${
-                signUp ? "h-full duration-300" : "invisible h-0 opacity-0"
+                signUp ? 'h-full duration-300' : 'invisible h-0 opacity-0'
               } space-y-3 sm:space-y-3`}
             >
-              <div className=" md:flex flex-wrap justify-between ">
+              <div className=" flex flex-wrap justify-between ">
                 <FormField
                   control={form.control}
                   name="name"
@@ -144,7 +157,7 @@ const RegisterForm = () => {
                           placeholder="name"
                           required
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -163,7 +176,7 @@ const RegisterForm = () => {
                           placeholder="email"
                           required
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -171,10 +184,51 @@ const RegisterForm = () => {
                   )}
                 />
               </div>
+              <div className="flex flex-wrap justify-between">
+                {/* <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">Address</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="p-5 border-[#066ccb]"
+                          placeholder="Address"
+                          required
+                          {...field}
+                          value={field.value || ''}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
 
-              <div className="md:flex flex-wrap justify-between">
+                {/* <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">Phone</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="p-5 border-[#066ccb]"
+                          placeholder="01XXXXXXXXX"
+                          required
+                          {...field}
+                          value={field.value || ''}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
+              </div>
+
+              <div className="flex flex-wrap justify-between">
                 <FormField
-                  // control={form.control}
+                  control={form.control}
                   name="subjects"
                   render={({ field }) => (
                     <FormItem>
@@ -185,7 +239,7 @@ const RegisterForm = () => {
                           placeholder="Enter subjects separated by commas"
                           required
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -193,7 +247,7 @@ const RegisterForm = () => {
                   )}
                 />
                 <FormField
-                  // control={form.control}
+                  control={form.control}
                   name="gradeLevel"
                   render={({ field }) => (
                     <FormItem>
@@ -204,7 +258,7 @@ const RegisterForm = () => {
                           placeholder="Enter grade levels"
                           required
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -213,9 +267,18 @@ const RegisterForm = () => {
                 />
               </div>
 
-              <div className=" ">
+              <div className=" flex flex-wrap justify-between">
+                {/* <div className="">
+                  <Label className=" text-base ">User Image</Label>
+                  <Input
+                    className=" border-[#066ccb]"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                </div> */}
                 <FormField
-                  // control={form.control}
+                  control={form.control}
                   name="role"
                   render={({ field }) => (
                     <FormItem>
@@ -238,10 +301,9 @@ const RegisterForm = () => {
                   )}
                 />
               </div>
-
               <div className=" ">
                 <FormField
-                  // control={form.control}
+                  control={form.control}
                   name="bio"
                   render={({ field }) => (
                     <FormItem>
@@ -251,7 +313,7 @@ const RegisterForm = () => {
                           placeholder="Tell us a little bit about yourself"
                           className="resize-none border-[#066ccb]"
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
 
@@ -259,28 +321,58 @@ const RegisterForm = () => {
                     </FormItem>
                   )}
                 />
-              </div>
 
-              <div className=" ">
-                <FormItem className="">
-                  <FormLabel className="text-base font-semibold">
-                    Availability
-                  </FormLabel>
-                  <DatePicker
-                    selectsRange
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChange={(update) => {
-                      setDateRange(update);
-                    }}
-                    dateFormat="dd-MM-yyyy" // 👈 this sets the display format
-                    placeholderText="Pick a date range"
-                    className="w-full px-3 py-2 border border-blue-500 rounded bg-gray-100"
-                  />
-                </FormItem>
+                {/* {uploading && <p className="text-blue-500">Uploading image...</p>} */}
+              </div>
+              <div className=" flex flex-wrap justify-between">
+                <FormField
+                  control={form.control}
+                  name="availability"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">Availability</FormLabel>
+                      <FormControl className="">
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="w-full justify-start bg-gray-200 text-left font-normal border-[#066ccb]"
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {dateRange?.from ? (
+                                dateRange.to ? (
+                                  <>
+                                    {format(dateRange.from, 'LLL dd, y')} -{' '}
+                                    {format(dateRange.to, 'LLL dd, y')}
+                                  </>
+                                ) : (
+                                  format(dateRange.from, 'LLL dd, y')
+                                )
+                              ) : (
+                                <span>Pick a date range</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="range"
+                              selected={dateRange}
+                              onSelect={(range) => {
+                                setDateRange(range);
+                                field.onChange(range); // Update form value
+                              }}
+                              numberOfMonths={2}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
-                  // control={form.control}
+                  control={form.control}
                   name="price"
                   render={({ field }) => (
                     <FormItem>
@@ -297,7 +389,7 @@ const RegisterForm = () => {
                           onChange={(e) =>
                             field.onChange(Number(e.target.value) || 0)
                           } // 🔹 Convert to number
-                          value={field.value ?? ""} // Ensures empty state is handled correctly
+                          value={field.value ?? ''} // Ensures empty state is handled correctly
                         />
                       </FormControl>
                       <FormMessage />
@@ -306,9 +398,9 @@ const RegisterForm = () => {
                 />
               </div>
 
-              <div className="md:flex flex-wrap justify-between ">
+              <div className="flex flex-wrap justify-between ">
                 <FormField
-                  // control={form.control}
+                  control={form.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
@@ -319,7 +411,7 @@ const RegisterForm = () => {
                           className=" border-[#066ccb]"
                           type="password"
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -327,7 +419,7 @@ const RegisterForm = () => {
                   )}
                 />
                 <FormField
-                  // control={form.control}
+                  control={form.control}
                   name="passwordConfirm"
                   render={({ field }) => (
                     <FormItem>
@@ -340,7 +432,7 @@ const RegisterForm = () => {
                           className=" border-[#066ccb] "
                           type="password"
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
 
@@ -353,28 +445,25 @@ const RegisterForm = () => {
                   )}
                 />
               </div>
-
               <Button
                 type="submit"
                 className=" w-full bg-[#066ccb] hover:bg-blue-600/40 hover:text-[#066ccb] text-lg hover:border-[#066ccb]"
                 disabled={uploading}
               >
-                {isSubmitting ? "Registering...." : "Register"}
+                {isSubmitting ? 'Registering....' : 'Register'}
               </Button>
             </form>
           </Form>
         </div>
-
-        {/* for student  */}
         <div>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className={`${
-                signUp ? " invisible h-0 opacity-0" : "h-full duration-300"
+                signUp ? ' invisible h-0 opacity-0' : 'h-full duration-300'
               } space-y-3 sm:space-y-3`}
             >
-              <div className=" flex flex-col space-y-2 justify-between ">
+              <div className=" flex flex-wrap justify-between ">
                 <FormField
                   control={form.control}
                   name="name"
@@ -387,7 +476,7 @@ const RegisterForm = () => {
                           placeholder="name"
                           required
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -406,7 +495,7 @@ const RegisterForm = () => {
                           placeholder="email"
                           required
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -414,7 +503,57 @@ const RegisterForm = () => {
                   )}
                 />
               </div>
+              <div className=" flex flex-wrap justify-between  ">
+                {/* <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">Address</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="p-5 border-[#066ccb]"
+                          placeholder="Address"
+                          required
+                          {...field}
+                          value={field.value || ''}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
 
+                {/* <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">Phone</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="p-5 border-[#066ccb]"
+                          placeholder="01XXXXXXXXX"
+                          required
+                          {...field}
+                          value={field.value || ''}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
+              </div>
+
+              {/* <div className="">
+                <Label className=" text-base ">User Image</Label>
+                <Input
+                  className=" border-[#066ccb]"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+              </div> */}
               <div className=" ">
                 <FormField
                   control={form.control}
@@ -454,7 +593,7 @@ const RegisterForm = () => {
                           className=" border-[#066ccb]"
                           type="password"
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -475,7 +614,7 @@ const RegisterForm = () => {
                           className=" border-[#066ccb] "
                           type="password"
                           {...field}
-                          value={field.value || ""}
+                          value={field.value || ''}
                         />
                       </FormControl>
 
@@ -491,15 +630,15 @@ const RegisterForm = () => {
 
               <Button
                 type="submit"
-                className=" w-full bg-indigo-500 hover:bg-blue-600/40 hover:text-[#066ccb] text-lg hover:border-[#066ccb]"
+                className=" w-full bg-[#066ccb] hover:bg-blue-600/40 hover:text-[#066ccb] text-lg hover:border-[#066ccb]"
                 disabled={uploading}
               >
-                {isSubmitting ? "Registering...." : "Register"}
+                {isSubmitting ? 'Registering....' : 'Register'}
               </Button>
             </form>
           </Form>
           <p className=" text-base mt-6">
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Link
               href="/login"
               className=" text-lg font-semibold text-[#066ccb] hover:underline "
@@ -522,4 +661,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default RegisterFrom;

@@ -1,17 +1,34 @@
+'use client';
+
+import { motion } from 'framer-motion';
+
 const MissionSection = () => {
   return (
-    <div className="max-w-7xl mx-auto text-center pt-12">
-      <h3 className="text-2xl lg:text-4xl font-bold text-blue-800 dark:text-white mb-2">
-        🎯 Our Mission
-      </h3>
-      <p className="text-gray-700 dark:text-gray-300 max-w-4xl mx-auto text-lg lg:text-xl">
-        Our mission is to empower students by providing them with the best
-        educators and resources available. We aim to create a platform that
-        fosters learning, growth, and success for all students, regardless of
-        their background or location.
-      </p>
-    </div>
+    <section className="w-full py-12 px-6 bg-white dark:bg-gray-900">
+      <div className="max-w-6xl mx-auto text-center">
+        <motion.h3
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-3xl md:text-4xl font-bold text-purple-700 dark:text-purple-400 mb-4"
+        >
+          🎯 Our Mission
+        </motion.h3>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          viewport={{ once: true }}
+          className="text-gray-700 dark:text-gray-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+        >
+          Our mission is to empower students by connecting them with top educators and resources. We’re building a platform that promotes learning, growth, and achievement—accessible to all, no matter where they are or where they come from.
+        </motion.p>
+      </div>
+    </section>
   );
 };
 
 export default MissionSection;
+

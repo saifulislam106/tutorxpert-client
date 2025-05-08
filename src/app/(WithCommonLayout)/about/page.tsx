@@ -13,7 +13,7 @@ export const metadata: Metadata={
 
 const AboutPage = () => {
     return (
-        <div className="mt-22"> 
+        <div className="pt-32"> 
             <MissionSection/>
             <BannerSection/>
             <WorkingSection/>

@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 
 const ActionBanner = () => {
   return (
-    <section className="bg-purple-800  mt-12 py-12">
+    <section className="bg-purple-900  mt-12 py-12">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}

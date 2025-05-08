@@ -1,15 +1,20 @@
 'use client';
 
 import { motion } from 'framer-motion';
-// import Image from 'next/image';
-// import Image from 'next/image';
+import edxImg from '../../assets/sponsorshipLogo/edx.png'
+import KhanImg from '../../assets/sponsorshipLogo/khanAcademy.png';
+import udemeImg from '../../assets/sponsorshipLogo/udeme.png'
+import unescoImg from '../../assets/sponsorshipLogo/unesco-seeklogo.png';
+import courseraImg from '../../assets/sponsorshipLogo/Coursera-Logo.png';
+import Image from 'next/image';
+
 
 const partners = [
-  { name: 'Khan Academy', logo: 'https://i.ibb.co.com/Q7YKs7rr/images.jpg' },
-  { name: 'Coursera', logo: 'https://i.ibb.co.com/kPV0r9R/coursera-on-campus-launched-to-enhance-reach-of-its-online-courses.webp' },
-  { name: 'EdX', logo: 'https://i.ibb.co.com/LXtGHyjH/channels4-profile.jpg' },
-  { name: 'Udemy', logo: 'https://i.ibb.co.com/sTxdpTq/gametiles-com-udemy-android.jpg' },
-  { name: 'UNESCO', logo: 'https://i.ibb.co.com/HLjD0kRD/Design-sans-titre-1.png' },
+  { name: 'Khan Academy', logo: KhanImg },
+  { name: 'Coursera', logo: courseraImg },
+  { name: 'EdX', logo: edxImg },
+  { name: 'Udemy', logo: udemeImg},
+  { name: 'UNESCO', logo: unescoImg},
 ];
 
 const Partnerships = () => {
@@ -40,12 +45,13 @@ const Partnerships = () => {
               viewport={{ once: true }}
               className="relative w-28 h-14 mx-auto"
             >
-              {/* <Image
+              <Image
                 src={partner?.logo}
                 alt={partner?.name}
                 fill
-                className="object-contain"
-              /> */}
+                className="object-contain bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                priority={true}
+              />
             </motion.div>
           ))}
         </div>

@@ -9,7 +9,7 @@ const CommonLayout = ({children}: {children : React.ReactNode}) => {
             
             <Navbar></Navbar> 
             
-            <main className="min-h-screen">
+            <main className="min-h-screen bg-white dark:bg-gray-900">
                 {children}
                 </main>
             

@@ -4,8 +4,8 @@ import BlogHeader from '@/components/blogPage/BlogHeader';
 import type { Metadata } from 'next'
  
 export const metadata: Metadata={
-  title: "TutorLink | Blogs",
-  description : "TutorLink helps you to find Best tutors"
+  title: "TutorXpert | Blogs",
+  description : "TutorXpert helps you to find Best tutors"
 }
 
 export type BlogArticle = {
@@ -32,7 +32,7 @@ const BlogPage = async () => {
   const BlogData = await res.json()
 
   return (
-    <div className="max-w-7xl mx-auto text-white flex flex-col justify-center items-center mt-22">
+    <div className="max-w-7xl mx-auto text-white flex flex-col justify-center items-center pt-32">
        <BlogHeader></BlogHeader>
      <div className="md:grid md:grid-cols-2 lg:grid-cols-3 justify-between gap-4 md:gap-2 mt-8">
       {

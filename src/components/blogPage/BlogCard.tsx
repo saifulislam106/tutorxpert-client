@@ -3,46 +3,45 @@ import { BlogArticle } from "@/app/(WithCommonLayout)/blogs/page";
 import Link from "next/link";
 import React from "react";
 
-const truncateText = (title: string, wordLimit: number) => {
-  const words = title.split(" ");
+const truncateText = (text: string, wordLimit: number) => {
+  const words = text.split(" ");
   return words.length > wordLimit
     ? words.slice(0, wordLimit).join(" ") + "..."
-    : title;
+    : text;
 };
-const BlogCard: React.FC<{ blog: BlogArticle }>  = ({ blog }) => {
-    
+
+const BlogCard: React.FC<{ blog: BlogArticle }> = ({ blog }) => {
   const dateOnly = blog?.publishedAt?.split("T")[0];
 
   return (
-    <div className="bg-white text-black dark:text-white hover:shadow-lg dark:bg-gray-800 hover:shadow-blue-600 rounded-2xl overflow-hidden transition-transform hover:scale-101 my-6 mx-8 shadow-2xl ">
-      <div className="relative">
+    <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group">
+      <div className="relative aspect-video w-full overflow-hidden">
         <img
           src={blog.urlToImage}
           alt={blog.title}
-          className="w-full h-32 object-cover"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        <span className="absolute top-2 right-2 bg-green-600 text-white text-sm px-3 py-1 rounded-md">
+        <span className="absolute top-3 left-3 bg-purple-700 text-white text-xs px-3 py-1 rounded-full">
           {dateOnly}
         </span>
+        
       </div>
-      <div className="p-4">
-        <h3 className="text-lg font-semibold ">
-          {truncateText(blog.title, 5)}
+
+      <div className="p-5">
+        <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-600 transition-colors duration-300">
+          {truncateText(blog.title, 8)}
         </h3>
-        <p className=" w-80 text-sm mt-2">
-          {truncateText(blog.description, 15)}{" "}
-          <Link
-            href={`/blogs/${blog.author}`}
-            className="text-blue-500 font-medium hover:underline md:text-lg"
-          >
-            Read More...
-          </Link>
+
+        <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+          {truncateText(blog.description, 20)}
         </p>
-        {/* <div className="flex items-center text-gray-600 text-sm mt-2">
-        <span className="mr-2">👤 By Admin</span>
-        <span className="mr-2">👁 455</span>
-        <span>💬 20</span>
-      </div> */}
+
+        <Link
+          href={`/blogs/${blog.author}`}
+          className="inline-block text-purple-600 hover:underline font-medium text-sm"
+        >
+          Read More →
+        </Link>
       </div>
     </div>
   );

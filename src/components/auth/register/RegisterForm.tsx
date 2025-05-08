@@ -1,14 +1,14 @@
 "use client";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { GiTeacher } from "react-icons/gi";
 import { PiStudentBold } from "react-icons/pi";
-import { MoveLeft } from "lucide-react";
-import Link from "next/link";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Link from "next/link";
+
+import { MoveLeft } from "lucide-react";
 
 import {
   Form,
@@ -28,9 +28,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
+import DatePicker from "react-datepicker";
 import { registerUser } from "@/services/auth";
-
 
 const RegisterForm = () => {
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
@@ -38,84 +37,110 @@ const RegisterForm = () => {
     null,
   ]);
   const [startDate, endDate] = dateRange;
-  const [isTutor, setIsTutor] = useState(false);
+  // const formatStartDate = startDate ? format(startDate, "dd-MM-yyyy") : "";
+  // const formatEndDate = endDate ? format(endDate, "dd-MM-yyyy") : "";
+
+  const [signUp, setSignUp] = useState(false);
+  const [uploading] = useState(false);
   const form = useForm();
-  const { formState: { isSubmitting } } = form;
-  const router = useRouter();
+
+  const {
+    formState: { isSubmitting },
+  } = form;
+
+  // password part
   const password = form.watch("password");
   const passwordConfirm = form.watch("passwordConfirm");
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    try {
-      const formattedData =
-        data.role === "Tutor"
-          ? {
-              ...data,
-              availability: {
-                from: startDate,
-                to: endDate || undefined,
-              },
-            }
-          : data;
+  const router = useRouter();
 
-      const res = await registerUser(formattedData);
-      if (res?.success) {
-        toast.success(res.message);
-        router.push("/login");
-      } else {
-        toast.error(res.message);
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    if (data.role === "Tutor") {
+      const formattedData = {
+        ...data,
+        availability: {
+          from: startDate, // Ensure from is a Date object
+          to: endDate ? endDate : undefined, // Convert to if present
+        },
+      };
+      try {
+        console.log(formattedData);
+        const res = await registerUser(formattedData);
+        console.log(res);
+        if (res?.success) {
+          toast.success(res?.message);
+          router.push("/login");
+        } else {
+          toast.error(res?.message);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
-      toast.error("Something went wrong!");
+    } else {
+      try {
+        const res = await registerUser(data);
+        console.log(res);
+        if (res?.success) {
+          toast.success(res?.message);
+          router.push("/login");
+        } else {
+          toast.error(res?.message);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        console.error(err);
+      }
     }
   };
 
   return (
-    <>
-     
-
-      <div className="flex flex-col items-center w-full mt-10 px-4">
-        {/* Toggle buttons */}
-        <div className="flex gap-4 mb-6">
-          <Button
-            variant={isTutor ? "outline" : "default"}
-            onClick={() => setIsTutor(false)}
-            className={`flex items-center gap-2 px-6 ${
-              !isTutor ? "bg-purple-600 text-white hover:bg-purple-700" : " bg-white text-purple-600"
-            }`}
-          >
-            <PiStudentBold size={20} />
-            Student
-          </Button>
-          <Button
-            variant={isTutor ? "default" : "outline"}
-            onClick={() => setIsTutor(true)}
-            className={`flex items-center gap-2 px-6 ${
-              isTutor ? "bg-purple-600 text-white hover:bg-purple-700" : "bg-white text-purple-600"
-            }`}
-          >
-            <GiTeacher size={20} />
-            Tutor
-          </Button>
-        </div>
-
-        {/* Form Card */}
-        <div className="w-full max-w-2xl bg-white border border-purple-600 shadow-lg rounded-lg p-6 space-y-6">
+    <div className=" md:w-[550px] w-[350px] shadow-[0px_0px_20px_theme(colors.blue.600)]  overflow-hidden rounded-lg border border-purple-500 p-4 bg-gray-100 dark:border-zinc-700 ">
+      <div className="flex select-none gap-2 border-b p-2.5 *:flex-1 *:rounded-md *:border *:p-2 *:text-center  *:shadow-inner *:outline-none dark:border-purple-500  *:dark:border-purple-500">
+        <button
+          onClick={() => setSignUp(false)}
+          className={`text-sm lg:text-md ${
+            !signUp
+              ? "bg-purple-500 text-white flex justify-center items-center gap-2"
+              : "bg-white text-purple-500 border-purple-500 flex justify-center items-center gap-2"
+          }`}
+        >
+          {" "}
+          <PiStudentBold size={"2rem"} />
+          Register as Student
+        </button>
+        <button
+          onClick={() => setSignUp(true)}
+          className={`text-sm lg:text-md ${
+            signUp
+              ? "bg-purple-500 text-white flex justify-center items-center gap-2"
+              : "bg-white text-purple-500 border-purple-500 flex justify-center items-center gap-2"
+          }`}
+        >
+          <GiTeacher size={"2rem"} />
+          Register as Tutor
+        </button>
+      </div>
+      <div className="w-full flex-col items-center overflow-hidden sm:p-4">
+        <div>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Shared fields */}
-              <div className="grid md:grid-cols-2 gap-4">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className={`${
+                signUp ? "h-full duration-300" : "invisible h-0 opacity-0"
+              } space-y-3 sm:space-y-3`}
+            >
+              <div className=" md:flex flex-wrap justify-between ">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel className=" text-base">Name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Name"
-                          className="border-purple-600"
+                          className="p-5 border-purple-500"
+                          placeholder="name"
                           required
                           {...field}
                           value={field.value || ""}
@@ -130,11 +155,11 @@ const RegisterForm = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className=" text-base">Email</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Email"
-                          className="border-purple-600"
+                          className="p-5 border-purple-500"
+                          placeholder="email"
                           required
                           {...field}
                           value={field.value || ""}
@@ -146,130 +171,250 @@ const RegisterForm = () => {
                 />
               </div>
 
-              {/* Conditional Fields */}
-              {isTutor && (
-                <>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="subjects"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Subjects</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Math, Physics, etc."
-                              className="border-purple-600"
-                              {...field}
-                              value={field.value || ""}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="gradeLevel"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Grade Level</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="High School, College"
-                              className="border-purple-600"
-                              {...field}
-                              value={field.value || ""}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+              <div className="md:flex flex-wrap justify-between">
+                <FormField
+                  // control={form.control}
+                  name="subjects"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">Subject</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="p-5 border-purple-500"
+                          placeholder="Enter subjects separated by commas"
+                          required
+                          {...field}
+                          value={field.value || ""}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  // control={form.control}
+                  name="gradeLevel"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">Grade Level</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="p-5 border-purple-500"
+                          placeholder="Enter grade levels"
+                          required
+                          {...field}
+                          value={field.value || ""}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-                  <FormField
-                    control={form.control}
-                    name="role"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Role</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue="Tutor"
-                        >
-                          <FormControl>
-                            <SelectTrigger className="border-purple-600">
-                              <SelectValue placeholder="Select your role" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="Tutor">Tutor</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="bio"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Bio</FormLabel>
+              <div className=" ">
+                <FormField
+                  // control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
-                          <Textarea
-                            placeholder="Tell us about yourself"
-                            className="resize-none border-purple-600"
-                            {...field}
-                            value={field.value || ""}
-                          />
+                          <SelectTrigger className=" border-purple-500 w-full">
+                            <SelectValue placeholder="Select your role" />
+                          </SelectTrigger>
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                        <SelectContent>
+                          <SelectItem value="Tutor">Tutor</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className=" ">
+                <FormField
+                  // control={form.control}
+                  name="bio"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">Bio</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Tell us a little bit about yourself"
+                          className="resize-none border-purple-500"
+                          {...field}
+                          value={field.value || ""}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className=" ">
+                <FormItem className="">
+                  <FormLabel className="text-base font-semibold">
+                    Availability
+                  </FormLabel>
+                  <DatePicker
+                    selectsRange
+                    startDate={startDate}
+                    endDate={endDate}
+                    onChange={(update) => {
+                      setDateRange(update);
+                    }}
+                    dateFormat="dd-MM-yyyy" // 👈 this sets the display format
+                    placeholderText="Pick a date range"
+                    className="w-full px-3 py-2 border border-purple-500 rounded bg-gray-100"
                   />
+                </FormItem>
 
-                  <div>
-                    <FormLabel className="font-semibold">Availability</FormLabel>
-                    <DatePicker
-                      selectsRange
-                      startDate={startDate}
-                      endDate={endDate}
-                      onChange={(update) => setDateRange(update)}
-                      dateFormat="dd-MM-yyyy"
-                      placeholderText="Select date range"
-                      className="w-full px-3 py-2 border border-purple-600 rounded bg-gray-100"
-                    />
-                  </div>
+                <FormField
+                  // control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Hourly Rate (Price)
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          className="p-5 border-purple-500"
+                          placeholder="Enter hourly rate"
+                          required
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value) || 0)
+                          } // 🔹 Convert to number
+                          value={field.value ?? ""} // Ensures empty state is handled correctly
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-                  <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Hourly Rate ($)</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="e.g. 25"
-                            className="border-purple-600"
-                            {...field}
-                            onChange={(e) =>
-                              field.onChange(Number(e.target.value) || 0)
-                            }
-                            value={field.value ?? ""}
-                          />
-                        </FormControl>
+              <div className="md:flex flex-wrap justify-between ">
+                <FormField
+                  // control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Password"
+                          className=" border-purple-500"
+                          type="password"
+                          {...field}
+                          value={field.value || ""}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  // control={form.control}
+                  name="passwordConfirm"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">
+                        Confirm Password
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Confirm Password"
+                          className=" border-purple-500 "
+                          type="password"
+                          {...field}
+                          value={field.value || ""}
+                        />
+                      </FormControl>
+
+                      {passwordConfirm && password !== passwordConfirm ? (
+                        <FormMessage> Password does not match </FormMessage>
+                      ) : (
                         <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
-              )}
+                      )}
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-              {!isTutor && (
+              <Button
+                type="submit"
+                className=" w-full bg-purple-500 hover:bg-purple-600 hover:text-white text-lg hover:border-purple-500"
+                disabled={uploading}
+              >
+                {isSubmitting ? "Registering...." : "Register"}
+              </Button>
+            </form>
+          </Form>
+        </div>
+
+        {/* for student  */}
+        <div>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className={`${
+                signUp ? " invisible h-0 opacity-0" : "h-full duration-300"
+              } space-y-3 sm:space-y-3`}
+            >
+              <div className=" flex flex-col space-y-2 justify-between ">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="p-5 border-purple-500"
+                          placeholder="name"
+                          required
+                          {...field}
+                          value={field.value || ""}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" text-base">Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="p-5 border-purple-500"
+                          placeholder="email"
+                          required
+                          {...field}
+                          value={field.value || ""}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className=" ">
                 <FormField
                   control={form.control}
                   name="role"
@@ -278,10 +423,10 @@ const RegisterForm = () => {
                       <FormLabel>Role</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue="Student"
+                        defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-purple-600">
+                          <SelectTrigger className=" border-purple-500 w-full">
                             <SelectValue placeholder="Select your role" />
                           </SelectTrigger>
                         </FormControl>
@@ -293,21 +438,20 @@ const RegisterForm = () => {
                     </FormItem>
                   )}
                 />
-              )}
+              </div>
 
-              {/* Password Fields */}
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className=" flex flex-wrap justify-between ">
                 <FormField
                   control={form.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel className=" text-base">Password</FormLabel>
                       <FormControl>
                         <Input
-                          type="password"
                           placeholder="Password"
-                          className="border-purple-600"
+                          className=" border-purple-500"
+                          type="password"
                           {...field}
                           value={field.value || ""}
                         />
@@ -321,18 +465,21 @@ const RegisterForm = () => {
                   name="passwordConfirm"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
+                      <FormLabel className=" text-base">
+                        Confirm Password
+                      </FormLabel>
                       <FormControl>
                         <Input
+                          placeholder="Confirm Password"
+                          className=" border-purple-500 "
                           type="password"
-                          placeholder="Confirm password"
-                          className="border-purple-600"
                           {...field}
                           value={field.value || ""}
                         />
                       </FormControl>
+
                       {passwordConfirm && password !== passwordConfirm ? (
-                        <FormMessage>Password does not match</FormMessage>
+                        <FormMessage> Password does not match </FormMessage>
                       ) : (
                         <FormMessage />
                       )}
@@ -343,35 +490,34 @@ const RegisterForm = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white text-lg"
-                disabled={isSubmitting}
+                className=" w-full bg-purple-500 hover:bg-purple-600 hover:text-white text-lg hover:border-purple-500"
+                disabled={uploading}
               >
-                {isSubmitting ? "Registering..." : "Register"}
+                {isSubmitting ? "Registering...." : "Register"}
               </Button>
             </form>
           </Form>
-
-          <div className="flex justify-between items-center text-sm mt-4">
-            <p>
-              Already have an account?{" "}
-              <Link
-                href="/login"
-                className="text-purple-600 hover:underline font-semibold"
-              >
-                Login
-              </Link>
-            </p>
+          <p className=" text-base mt-6">
+            Already have an account?{" "}
             <Link
-              href="/"
-              className="flex items-center gap-2 text-gray-500 hover:text-purple-600"
+              href="/login"
+              className=" text-lg font-semibold text-purple-500 hover:underline "
             >
-              <MoveLeft size={18} />
-              Back to Home
+              Login
             </Link>
-          </div>
+          </p>
         </div>
+
+        <p className=" flex items-center justify-center mt-6">
+          <Link
+            href="/"
+            className="flex gap-3 items-center text-base font-semibold text-gray-400 hover:text-purple-600 "
+          >
+            <MoveLeft /> Back to Home
+          </Link>
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 

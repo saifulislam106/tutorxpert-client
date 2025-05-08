@@ -28,7 +28,7 @@ export default function BenefitsSection() {
   ];
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <section className="mt-12 py-12 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Section Header */}
       <motion.div 
         className="text-center mb-14"

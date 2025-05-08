@@ -9,7 +9,7 @@ import { IUser } from '@/types/user'
 
 const TutorSection = ({ tutors }: { tutors: IUser[] }) => {
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <section className="mt-12 py-12 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}

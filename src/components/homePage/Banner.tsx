@@ -2,13 +2,13 @@
 import Link from 'next/link';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import bannerImg from '../../assets/banner.jpg';
 import Image from 'next/image';
+import bannerImg from '../../assets/banner.jpg'; // or use from public folder if needed
 
 const Banner = () => {
   return (
-    <section className="bg-white dark:bg-gray-900 py-16">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col-reverse md:flex-row items-center justify-between gap-12">
+    <section className="bg-white dark:bg-gray-900 pt-44">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-12">
 
         {/* Text Section */}
         <div className="flex-1 space-y-6 text-center md:text-left">
@@ -40,12 +40,13 @@ const Banner = () => {
         </div>
 
         {/* Image Section */}
-        <div className="flex-1 relative h-[320px] md:h-[480px] lg:h-[500px] w-full hover:scale-105 transition-transform duration-300 rounded-xl overflow-hidden shadow-lg shadow-purple-100">
+        <div className="flex-1 w-full max-w-md md:max-w-none">
           <Image
             src={bannerImg}
             alt="Banner"
-            fill
-            className="object-cover rounded-xl"
+            width={400}
+            height={300}
+            className="w-full h-auto object-cover rounded-xl shadow-lg shadow-purple-100 transition-transform duration-300 hover:scale-105"
             priority
           />
         </div>

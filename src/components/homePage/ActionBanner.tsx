@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 
 const ActionBanner = () => {
   return (
-    <section className="bg-purple-800  py-16">
+    <section className="bg-purple-800  mt-12 py-12">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -21,7 +21,7 @@ const ActionBanner = () => {
           Join <span className="font-semibold text-purple-600 dark:text-purple-400">TutorLink</span> today and start your educational journey with trusted <br /> tutors or share your expertise with students worldwide.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
+        <div className="flex sm:flex-row gap-4 justify-center mt-4">
           <Link
             href="/tutors"
 

@@ -39,7 +39,7 @@ const achievements = [
 
 const AchievementsColumn = () => {
   return (
-    <section className="py-20 bg-purple-50 dark:bg-gray-900 border-t border-purple-200 dark:border-gray-700 transition-colors duration-300">
+    <section className="mt-12 pt-12 bg-purple-50 dark:bg-gray-900 border-t border-purple-200 dark:border-gray-700 transition-colors duration-300">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}

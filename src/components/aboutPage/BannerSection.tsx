@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const BannerSection = () => {
   return (
-    <section className="mt-[80px] px-6 py-12">
+    <section className="mt-[80px] px-6 py-32">
       {/* Banner Content */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         {/* Text Section */}
@@ -18,7 +18,7 @@ const BannerSection = () => {
             first session today and excel in your studies!
           </p>
           <Link href={"/tutors"}>
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition">
+            <button className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition">
               Get Started
             </button>
           </Link>

@@ -10,7 +10,7 @@ export const metadata: Metadata={
 
 const ContactPage = () => {
     return (
-        <div className='mt-22'>
+        <div className='pt-28'>
             <ContactSection />
             {/* Add any additional sections or components here */}
             {/* Example: <Partnerships /> */}

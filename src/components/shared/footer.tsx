@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-600 dark:text-gray-400">
         {/* Brand Info */}
         <div>
-          <h3 className="text-lg font-semibold text-purple-700 dark:text-purple-500 mb-2">
+          <h3 className="text-2xl font-bold text-purple-500 dark:text-purple-500 mb-2">
             TutorXpert 🎓
           </h3>
           <p>Connecting students with verified tutors for academic success.</p>
@@ -78,15 +78,15 @@ const Footer = () => {
           <h4 className="font-medium text-gray-800 dark:text-gray-200 mb-2">
             Contact
           </h4>
-          <p>Email: support@tutorlink.com</p>
+          <p>Email: support@tutorXpert.com</p>
           <p>Phone: +880-1234-567890</p>
-          <p>Dhaka, Bangladesh 🇧🇩</p>
+          <p>Dhaka, Bangladesh</p>
         </div>
       </div>
 
       {/* Copyright */}
       <div className="border-t border-b text-center text-xs py-4 text-gray-500 dark:text-gray-100">
-        © {new Date().getFullYear()} TutorLink. All rights reserved.
+        © {new Date().getFullYear()} TutorXpert. All rights reserved.
       </div>
     </footer>
   );

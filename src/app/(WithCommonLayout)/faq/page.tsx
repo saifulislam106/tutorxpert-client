@@ -9,7 +9,7 @@ export const metadata: Metadata={
 
 const FAQPage = () => {
     return (
-        <div className = 'mt-22'>
+        <div className = 'pt-32'>
             <FAQ/>
         </div>
     );

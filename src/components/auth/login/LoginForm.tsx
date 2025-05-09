@@ -20,12 +20,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+
 const LoginForm = () => {
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
 
-  const { setIsLoading } = useUser();
+  const { setIsLoading ,setUser } = useUser();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirectPath");
   const router = useRouter();
@@ -40,6 +41,7 @@ const LoginForm = () => {
       setIsLoading(true);
       if (res?.success) {
         toast.success(res?.message);
+        setUser(res?.data);
         router.push(redirect ?? "/");
       } else {
         toast.error(res?.message);

@@ -19,13 +19,17 @@ import clsx from "clsx";
 import { FiMenu } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
 import { ScrollArea } from "../ui/scroll-area";
+import { useIsHydrated } from "@/hooks/useIsHydrated";
 
 const Navbar = () => {
   const [isSideMenuOpen, setMenu] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   const location = usePathname();
   const router = useRouter();
-  const { user, setIsLoading } = useUser();
+  const { user,setUser, setIsLoading } = useUser();
+  console.log(setUser , "sdf");
+
+  const hydrated = useIsHydrated()
 
   const menuData = [
     { name: "Home", href: "/" },
@@ -44,6 +48,7 @@ const Navbar = () => {
 
   const handleLogOut = () => {
     logout();
+    setUser(null);
     setIsLoading(true);
     router.push('/');
   };
@@ -92,39 +97,41 @@ const Navbar = () => {
 
         {/* User Section */}
         <section className="flex items-center gap-4">
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>User</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-black border-purple-600 shadow-md shadow-purple-600">
-                <DropdownMenuLabel className="text-white">{user.role}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link href={user.role === 'Student' ? "/student" : "/tutor"} className="flex gap-2 items-center text-purple-400">
-                    <LayoutDashboard />
-                    Dashboard
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLogOut} className="text-purple-400 flex gap-2 items-center">
-                  <LogOut />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div className="flex gap-2">
-              <Link href={'/login'}>
-                <Button className="bg-white text-purple-600 border border-purple-600 hover:bg-purple-600 hover:text-white">
-                  <LogIn />
-                  Login
-                </Button>
+          {
+      hydrated?(    user ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>User</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="bg-black border-purple-600 shadow-md shadow-purple-600">
+            <DropdownMenuLabel className="text-white">{user.role}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Link href={user.role === 'Student' ? "/student" : "/tutor"} className="flex gap-2 items-center text-purple-400">
+                <LayoutDashboard />
+                Dashboard
               </Link>
-            </div>
-          )}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogOut} className="text-purple-400 flex gap-2 items-center">
+              <LogOut />
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <div className="flex gap-2">
+          <Link href={'/login'}>
+            <Button className="bg-white text-purple-600 border border-purple-600 hover:bg-purple-600 hover:text-white">
+              <LogIn />
+              Login
+            </Button>
+          </Link>
+        </div>
+      )):null
+          }
         </section>
       </nav>
     </div>

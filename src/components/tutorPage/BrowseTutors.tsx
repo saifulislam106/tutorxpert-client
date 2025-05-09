@@ -74,7 +74,7 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
       <div className="xl:hidden mb-8 text-center ">
         <Sheet>
           <SheetTrigger asChild className=" flex justify-end">
-            <Button variant="outline" className="border-purple-600 ">
+            <Button variant="outline" className="border-purple-600 text-white ">
               <GiFunnel />
               Filter Tutors
             </Button>
@@ -82,7 +82,7 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
 
           <SheetContent
             side="top"
-            className="w-[300px] sm:w-[400px]  py-8  px-6 overflow-y-scroll  "
+            className="w-[300px] sm:w-[400px] dark:bg-gray-400 py-8  px-6 overflow-y-scroll  "
           >
             <SheetTitle className="text-lg font-semibold mb-4"></SheetTitle>
             <div className=" flex justify-between items-center">
@@ -136,7 +136,7 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
                     <SelectTrigger className="hover:shadow-lg w-full  placeholder-white">
                       <SelectValue placeholder="Select Subject" />
                     </SelectTrigger>
-                    <SelectContent className="">
+                    <SelectContent className="bg-white">
                       <SelectItem className="bg-white" value="All">All</SelectItem>
                       {[
                         "Mathematics",
@@ -349,7 +349,7 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
           </div>
         </div>
       </div>
-      
+      {/* pagination  */}
       <div className="flex justify-center items-center mt-6 gap-2">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}

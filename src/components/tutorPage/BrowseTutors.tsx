@@ -74,7 +74,7 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
       <div className="xl:hidden mb-8 text-center ">
         <Sheet>
           <SheetTrigger asChild className=" flex justify-end">
-            <Button variant="outline" className="border-blue-600 ">
+            <Button variant="outline" className="border-purple-600 ">
               <GiFunnel />
               Filter Tutors
             </Button>
@@ -86,7 +86,7 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
           >
             <SheetTitle className="text-lg font-semibold mb-4"></SheetTitle>
             <div className=" flex justify-between items-center">
-              <h2 className="text-xl font-semibold mb-4">Filters</h2>
+              <h2 className="text-xl text-white font-semibold mb-4">Filters</h2>
               <button
                 onClick={() => {
                   setSearchTerm("");
@@ -105,9 +105,9 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
               <Collapsible defaultOpen className=" my-4">
                 <CollapsibleTrigger asChild>
                   <button className="group flex items-center justify-between w-full text-left font-medium ">
-                    <span>Search By Name</span>
+                    <span className="text-white">Search By Name</span>
                     <span className="transition-transform duration-300 group-data-[state=open]:rotate-180">
-                      <ChevronDown className="h-4 w-4" />
+                      <ChevronDown className="h-4 text-white w-4" />
                     </span>
                   </button>
                 </CollapsibleTrigger>
@@ -125,9 +125,9 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
               <Collapsible defaultOpen className=" my-4">
                 <CollapsibleTrigger asChild>
                   <button className="group flex text-base items-center justify-between w-full text-left font-medium ">
-                    <span>Sort By Subject</span>
+                    <span className="text-white">Sort By Subject</span>
                     <span className="transition-transform duration-300 group-data-[state=open]:rotate-180">
-                      <ChevronDown className="h-5 w-5" />
+                      <ChevronDown className="h-4 text-white w-4" />
                     </span>
                   </button>
                 </CollapsibleTrigger>
@@ -137,7 +137,7 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
                       <SelectValue placeholder="Select Subject" />
                     </SelectTrigger>
                     <SelectContent className="">
-                      <SelectItem value="All">All</SelectItem>
+                      <SelectItem className="bg-white" value="All">All</SelectItem>
                       {[
                         "Mathematics",
                         "Physics",
@@ -162,18 +162,18 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
               <Collapsible defaultOpen>
                 <CollapsibleTrigger asChild>
                   <button className="group flex items-center justify-between w-full text-left font-medium ">
-                    <span>Rating</span>
+                    <span className="text-white">Rating</span>
                     <span className="transition-transform duration-300 group-data-[state=open]:rotate-180">
-                      <ChevronDown className="h-4 w-4" />
+                      <ChevronDown className="h-4 text-white w-4" />
                     </span>
                   </button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="mt-2">
                   <Select onValueChange={setRating}>
-                    <SelectTrigger className=" hover:shadow-lg w-full">
+                    <SelectTrigger className="bg-white hover:shadow-lg w-full">
                       <SelectValue placeholder="Rating" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white">
                       <SelectItem value="asc">Ascending</SelectItem>
                       <SelectItem value="dsc">Descending</SelectItem>
                     </SelectContent>
@@ -184,18 +184,18 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
               <Collapsible defaultOpen className=" my-4">
                 <CollapsibleTrigger asChild>
                   <button className="group flex items-center justify-between w-full text-left font-medium ">
-                    <span>Sort By</span>
+                    <span className="text-white">Sort By</span>
                     <span className="transition-transform duration-300 group-data-[state=open]:rotate-180">
-                      <ChevronDown className="h-4 w-4" />
+                      <ChevronDown className="h-4 text-white w-4" />
                     </span>
                   </button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="mt-2">
                   <Select onValueChange={setPriceSort}>
-                    <SelectTrigger className=" hover:shadow-lg w-full">
+                    <SelectTrigger className="bg-white hover:shadow-lg w-full">
                       <SelectValue placeholder="Price" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white">
                       <SelectItem value="lowtohigh">Low to High</SelectItem>
                       <SelectItem value="hightolow">High to Low</SelectItem>
                     </SelectContent>
@@ -213,7 +213,7 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
         {/* Sidebar Filter for Large Devices */}
         <div className="hidden xl:block w-full max-w-xs py-8 bg-blue-800/10 hover:bg-blue-800/20 border-r-2 border-blue-400 px-6  rounded-xl shadow-md h-fit">
           <div className=" flex justify-between items-center">
-            <h2 className="text-xl font-semibold mb-4">Filters</h2>
+            <h2 className="text-xl text-white font-semibold mb-4">Filters</h2>
             <button
               onClick={() => {
                 setSearchTerm("");
@@ -234,9 +234,9 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
             <Collapsible defaultOpen className=" my-4">
               <CollapsibleTrigger asChild>
                 <button className="group flex items-center justify-between w-full text-left font-medium ">
-                  <span>Search By Name</span>
+                  <span className="text-white">Search By Name</span>
                   <span className="transition-transform duration-300 group-data-[state=open]:rotate-180">
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className="h-4 text-white w-4" />
                   </span>
                 </button>
               </CollapsibleTrigger>
@@ -244,7 +244,7 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
                 <Input
                   type="text"
                   placeholder="Search by tutor name"
-                  className=" placeholder-white"
+                  className=" placeholder-white text-white"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -254,9 +254,9 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
             <Collapsible defaultOpen className=" my-4">
               <CollapsibleTrigger asChild>
                 <button className="group flex text-base items-center justify-between w-full text-left font-medium ">
-                  <span>Sort By Subject</span>
+                  <span className="text-white">Sort By Subject</span>
                   <span className="transition-transform duration-300 group-data-[state=open]:rotate-180">
-                    <ChevronDown className="h-5 w-5" />
+                    <ChevronDown className="h-4 text-white w-4" />
                   </span>
                 </button>
               </CollapsibleTrigger>
@@ -265,8 +265,8 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
                   <SelectTrigger className="hover:shadow-lg w-full  placeholder-white">
                     <SelectValue placeholder="Select Subject" />
                   </SelectTrigger>
-                  <SelectContent className="">
-                    <SelectItem value="All">All</SelectItem>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="All"><span className="text-white">All</span></SelectItem>
                     {[
                       "Mathematics",
                       "Physics",
@@ -291,18 +291,18 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
             <Collapsible defaultOpen>
               <CollapsibleTrigger asChild>
                 <button className="group flex items-center justify-between w-full text-left font-medium ">
-                  <span>Rating</span>
+                  <span className="text-white">Rating</span>
                   <span className="transition-transform duration-300 group-data-[state=open]:rotate-180">
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className="h-4 text-white w-4" />
                   </span>
                 </button>
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-2">
                 <Select onValueChange={setRating}>
-                  <SelectTrigger className=" hover:shadow-lg w-full">
+                  <SelectTrigger className="text-white hover:shadow-lg w-full">
                     <SelectValue placeholder="Rating" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="asc">Ascending</SelectItem>
                     <SelectItem value="dsc">Descending</SelectItem>
                   </SelectContent>
@@ -313,18 +313,18 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
             <Collapsible defaultOpen className=" my-4">
               <CollapsibleTrigger asChild>
                 <button className="group flex items-center justify-between w-full text-left font-medium ">
-                  <span>Sort By</span>
+                  <span className="text-white">Sort By</span>
                   <span className="transition-transform duration-300 group-data-[state=open]:rotate-180">
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className="h-4 text-white w-4" />
                   </span>
                 </button>
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-2">
                 <Select onValueChange={setPriceSort}>
-                  <SelectTrigger className=" hover:shadow-lg w-full">
+                  <SelectTrigger className="text-white hover:shadow-lg w-full">
                     <SelectValue placeholder="Price" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="lowtohigh">Low to High</SelectItem>
                     <SelectItem value="hightolow">High to Low</SelectItem>
                   </SelectContent>
@@ -365,7 +365,7 @@ const BrowseTutors = ({ tutors }: { tutors: IUser[] }) => {
             onClick={() => setCurrentPage(i + 1)}
             className={`px-3 py-1 rounded ${
               currentPage === i + 1
-                ? "bg-blue-600"
+                ? "bg-purple-600"
                 : "bg-gray-800  "
             }`}
           >

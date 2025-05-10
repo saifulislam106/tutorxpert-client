@@ -1,20 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
 import { Metadata } from "next";
 import Image from "next/image";
 
-type Props = {
+interface BlogDetailsPageProps {
   params: {
     blogId: string;
   };
-};
+}
 
 type Blog = {
   author: string;
+  title: string;
+  description: string;
+  publishedAt: string;
+  urlToImage: string;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const decodedParams = decodeURIComponent(params?.blogId);
+export async function generateMetadata({
+  params,
+}: BlogDetailsPageProps): Promise<Metadata> {
+  const decodedParams = decodeURIComponent(params.blogId);
+
   const res = await fetch(
     "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=a893a3bfa6ff4d6ba04ffebee2a4e707",
     { next: { revalidate: 30 } }
@@ -26,12 +32,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: blog?.title || "Blog",
-    description: blog?.description || "Explore this blog post on TutorLink!",
+    description: blog?.description || "Explore this blog post on TutorXpert!",
   };
 }
 
-const BlogDetailsPage = async ({ params }: Props) => {
-  const decodedParams = decodeURIComponent(params?.blogId);
+export default async function BlogDetailsPage({
+  params,
+}: BlogDetailsPageProps) {
+  const decodedParams = decodeURIComponent(params.blogId);
+
   const res = await fetch(
     "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=a893a3bfa6ff4d6ba04ffebee2a4e707",
     { next: { revalidate: 30 } }
@@ -43,7 +52,7 @@ const BlogDetailsPage = async ({ params }: Props) => {
 
   if (!blog)
     return (
-      <div className="text-center pt-20 text-lg text-gray-500">
+      <div className="text-center pt-20 text-lg text-gray-500 dark:text-gray-400">
         Blog not found.
       </div>
     );
@@ -78,7 +87,6 @@ const BlogDetailsPage = async ({ params }: Props) => {
               "No content available for this blog."}
           </p>
 
-          {/* Optional Tags / Extras */}
           <div className="pt-6 flex gap-2 flex-wrap">
             <span className="bg-purple-100 dark:bg-purple-800 text-purple-800 dark:text-white px-3 py-1 rounded-full text-xs">
               Tech
@@ -91,6 +99,4 @@ const BlogDetailsPage = async ({ params }: Props) => {
       </div>
     </div>
   );
-};
-
-export default BlogDetailsPage;
+}
